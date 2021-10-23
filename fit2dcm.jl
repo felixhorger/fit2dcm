@@ -58,7 +58,13 @@ function main()
 end
 
 
-function fit2dcm(fitfunc::Function, returntypes, arrays::AbstractArray{<: Real, 4}, tags, background)
+function fit2dcm(
+	fitfunc::Function,
+	returntypes::NTuple{N, Type} where N,
+	arrays::AbstractArray{<: Real, 4},
+	tags::AbstractVector,
+	background::AbstractVector{<: UnitRange{Int64}}
+)
 	
 	# Get noise estimation for each signal(parameter or tag)
 	Δsignal = Statistics.std(view(arrays, :, background...); dims=2:4)
