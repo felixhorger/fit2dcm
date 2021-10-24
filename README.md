@@ -8,8 +8,9 @@ Installation
 
 1. Clone this repository to any directory DIR and `cd` into it
 2. Get `julia` packages with `julia install.jl`
-3. On Unix-like systems, create a script and replace DIR with the respective **absolute** path:
-`echo 'julia --project=DIR DIR/fit2dcm.jl $@' > ~/.local/bin/fit2dcm && chmod u+x ~/.local/bin/fit2dcm`
+3. On Unix-like systems, if you want to call `fit2dcm` from anywhere in the cmdline,
+insert the **absolute** path below and run:\
+`DIR=<absolute path> && echo 'julia --project=$DIR $DIR/fit2dcm.jl $@' > ~/.local/bin/fit2dcm && chmod u+x ~/.local/bin/fit2dcm`
 
 Using the script
 ----------------
