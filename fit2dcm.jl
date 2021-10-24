@@ -13,8 +13,9 @@ function main()
 	for specfile in ARGS
 		# Get specs and DICOMs
 		specs = YAML.load_file(specfile)
-		if specs["directory"] != directory # Do not reload unnecessarily
-			directory = specs["directory"]
+		new_directory = expanduser(specs["directory"])
+		if new_directory != directory # Do not reload unnecessarily
+			directory = new_directory
 			dcmdict = DICOMTools.load_dcms(directory)
 		end
 
