@@ -8,7 +8,7 @@ Installation
 
 1. Clone this repository to any directory DIR
 2. On Unix-like systems, create a script and replace DIR with the respective **absolute** path:
-  `echo 'julia --project=DIR DIR/fit2dcm.jl $@' > ~/.local/bin/fit2dcm`
+`echo 'julia --project=DIR DIR/fit2dcm.jl $@' > ~/.local/bin/fit2dcm && chmod u+x ~/.local/bin/fit2dcm`
 
 Using the script
 ----------------
