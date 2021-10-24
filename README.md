@@ -10,12 +10,17 @@ Installation
 2. Get `julia` packages with `julia install.jl`
 3. On Unix-like systems, if you want to call `fit2dcm` from anywhere in the cmdline,
 insert the **absolute** path below and run:\
-`DIR=<absolute path> && echo 'julia --project=$DIR $DIR/fit2dcm.jl $@' > ~/.local/bin/fit2dcm && chmod u+x ~/.local/bin/fit2dcm`
+`DIR=`insert DIR here\
+`FIT2DCMTHREADS=`insert number of desired threads here (if you are unsure, use 2)\
+`echo "julia --threads=$FIT2DCMTHREADS --project=$DIR $DIR/fit2dcm.jl \$@" > ~/.local/bin/fit2dcm && chmod u+x ~/.local/bin/fit2dcm`
+
+Comment on threads: DICOM loading times dominate in the most cases, unless you have larger volumes (> 32 * 256^2 voxels).
+
 
 Using the script
 ----------------
 - Unix: `fit2dcm ARGS`
-- Windows: `julia --project=DIR fit2dcm.jl ARGS` (or any other way you prefer)
+- Windows: `julia --project=`insert DIR here `fit2dcm.jl ARGS`
 - Arguments ARGS are a list of YAML files containing the information:
 	- Information every YAML file must contain:
 	```
