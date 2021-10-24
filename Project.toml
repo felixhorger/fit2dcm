@@ -1,6 +1,0 @@
-[deps]
-DICOM = "a26e6606-dd52-5f6a-a97f-4f611373d757"
-DICOMTools = "597a1ee7-c795-4831-9580-4b08c9a95592"
-MATLAB = "10e44e05-a98a-55b3-a45b-ba969058deb6"
-MRIQuant = "b09ea782-e7b1-11eb-0071-196df3f86e90"
-YAML = "ddb6d928-2868-570f-bddf-ab3f9cf99eb6"
