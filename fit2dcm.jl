@@ -29,10 +29,12 @@ function main()
 				MRIQuant.fit_inversion_recovery(Tinv, signal, Δsignal, T1_0, Minv_0, M0_0)
 			end
 			returntypes = (Float64, Float64, Float64, Float64, Float64, Float64)
+			names = ("T1", "DeltaT1", "Minv", "DeltaMinv", "M0", "DeltaM0")
 		elseif specs["type"] == "Spin Echo"
 			tagname = DICOM.tag"EchoTime"
 			fitfunc = MRIQuant.fit_transverse_relax
 			returntypes = (Float64, Float64, Float64, Float64)
+			names = ("T2", "DeltaT2", "M0", "DeltaM0")
 		end
 
 		# Get background
@@ -54,7 +56,14 @@ function main()
 		maps, Δsignal = fit2dcm(fitfunc, returntypes, arrays, tags, background)
 
 		# Write the results
-		MATLAB.write_matfile(splitext(specfile)[1] * ".mat", maps=maps, parameters=tags, deltasignal=Δsignal)
+		MATLAB.write_matfile(
+			splitext(specfile)[1] * ".mat",
+			maps=maps,
+			names=names,
+			coordinated=tags,
+			coordinatename=tagname,
+			deltasignal=Δsignal
+		)
 	end
 end
 
@@ -67,7 +76,7 @@ function fit2dcm(
 	background::AbstractVector{<: UnitRange{Int64}}
 )
 	
-	# Get noise estimation for each signal(parameter or tag)
+	# Get noise estimation for each signal(coordinate or tag)
 	Δsignal = Statistics.std(view(arrays, :, background...); dims=2:4)
 	Δsignal = dropdims(Δsignal; dims=(2, 3, 4))
 

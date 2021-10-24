@@ -34,4 +34,14 @@ Using the script
 	- Types
 		- `Inversion Recovery`
 		- `Spin Echo`
+- If the YAML files are ordered such that the DICOM directory does not change, then the DICOMs are reused.
+For example, if spin echo and inversion recovery experiements are present in the same directory, DICOMs are loaded
+only once.
+- For each YAML file, a .mat file is produced with the same base name.
+It contains:
+	- `maps`: Estimated parameter maps in a cell array.
+	- `names`: Names of the parameters.
+	- `coordinates`: Best explained with an example: for inversion recovery, this would be the inversion times.
+	- `coordinatename`: In the above example, this would be `InversionTime`, i.e. the DICOM tag.
+	- `deltasignal`: Error of the intensity values found in the DICOMS, estimated from background.
 
