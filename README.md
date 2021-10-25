@@ -12,7 +12,8 @@ Installation
 insert the **absolute** path below and run:\
 `DIR=`insert DIR here\
 `FIT2DCMTHREADS=`insert number of desired threads here (if you are unsure, use 2)\
-`echo "julia --threads=$FIT2DCMTHREADS --project=$DIR $DIR/fit2dcm.jl \$@" > ~/.local/bin/fit2dcm && chmod u+x ~/.local/bin/fit2dcm`
+`echo "julia --threads=$FIT2DCMTHREADS --project=$DIR $DIR/fit2dcm.jl \$@" > ~/.local/bin/fit2dcm`\
+`chmod u+x ~/.local/bin/fit2dcm`
 
 Comment on threads: DICOM loading times dominate in the most cases, unless you have larger volumes (> 32 * 256^2 voxels).
 
@@ -20,7 +21,7 @@ Comment on threads: DICOM loading times dominate in the most cases, unless you h
 Using the script
 ----------------
 - Unix: `fit2dcm ARGS`
-- Windows: `julia --project=`insert DIR here `fit2dcm.jl ARGS`
+- Windows: `julia --threads=`insert num threads here `--project=`insert DIR here `fit2dcm.jl ARGS`
 - Arguments ARGS are a list of YAML files containing the information:
 	- Information every YAML file must contain:
 	```
@@ -40,7 +41,7 @@ Using the script
 	```
 	- Types
 		- `Inversion Recovery`
-		- `Spin Echo`
+		- `Transverse Releaxation`
 - If the YAML files are ordered such that the DICOM directory does not change, then the DICOMs are reused.
 For example, if spin echo and inversion recovery experiements are present in the same directory, DICOMs are loaded
 only once.

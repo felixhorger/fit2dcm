@@ -30,7 +30,7 @@ function main()
 			end
 			returntypes = (Float64, Float64, Float64, Float64, Float64, Float64)
 			names = ("T1", "DeltaT1", "Minv", "DeltaMinv", "M0", "DeltaM0")
-		elseif specs["type"] == "Spin Echo"
+		elseif specs["type"] == "Transverse Relaxation"
 			tagname = DICOM.tag"EchoTime"
 			fitfunc = MRIQuant.fit_transverse_relax
 			returntypes = (Float64, Float64, Float64, Float64)
