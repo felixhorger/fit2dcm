@@ -9,20 +9,22 @@ import MRIRelax
 
 function main()
 	directory = ""
-	local dcmdict 
+	local full_dcmdict
 	for specfile in ARGS
 		# Get specs and DICOMs
 		specs = YAML.load_file(specfile)
 
 		# Load DICOMs
 		multiseries = let
-			directory = expanduser(specs["directory"])
-			dcmdict = DICOMTools.load_dcms(directory, DICOMTools.read_uid)
+			if length(directory) == 0 || directory != tmp
+				directory = expanduser(specs["directory"])
+				full_dcmdict = DICOMTools.load_dcms(directory, DICOMTools.read_uid)
+			end
 
 			# Filter DICOMs by uid and fully load matches
 			dcmdict = DICOMTools.filter(
 				dcms -> dcms[1][DICOM.tag"SeriesInstanceUID"] in specs["uids"],
-				dcmdict
+				full_dcmdict
 			)
 			DICOMTools.load_dcms!(dcmdict)
 
