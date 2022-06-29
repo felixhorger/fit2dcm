@@ -29,13 +29,13 @@ function main()
 			DICOMTools.load_dcms!(dcmdict)
 
 			# Extract DICOMs from dictionary
-			[series.dcms for series in values(dcmdict)]
+			[series for series in values(dcmdict)]
 		end
 
 		# Get tag and fitfunc
 		if specs["type"] == "Inversion Recovery"
 			tagname = DICOM.tag"InversionTime"
-			tags = DICOMTools.get_tag(multiseries, tagname; outtype=Float64)
+			tags = DICOMTools.get_tag(multiseries, tagname, Float64)
 			# Note: Get tags here because some applications might use other (non-numeric, multiple) tags
 			fitfunc = (Tinv, signal, Δsignal) -> begin
 				let	T1_0::Float64 = specs["T1_0"],
@@ -48,14 +48,14 @@ function main()
 			names = ["T1", "ΔT1", "Minv", "ΔMinv", "M0", "ΔM0"]
 		elseif specs["type"] == "Transverse Relaxation"
 			tagname = DICOM.tag"EchoTime"
-			tags = DICOMTools.get_tag(multiseries, tagname; outtype=Float64)
+			tags = DICOMTools.get_tag(multiseries, tagname, Float64)
 			fitfunc = MRIRelax.fit_transverse_relax
 			num_params = 4
 			names = ["T2", "ΔM0", "ΔM0"]
 		end
 
 		# Get signals and tags from DICOMs
-		signal = DICOMTools.merge_multiseries(multiseries; data_type=Float64)
+		signal = DICOMTools.merge_multiseries(multiseries, Float64)
 
 		# Get background
 		background = ntuple(
