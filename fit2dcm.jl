@@ -35,7 +35,7 @@ function main()
 		# Get tag and fitfunc
 		if specs["type"] == "Inversion Recovery"
 			tagname = DICOM.tag"InversionTime"
-			tags = DICOMTools.get_tag(multiseries, tagname, Float64)
+			tags = DICOMTools.get_tag(multiseries, tagname, Float64, 2e4)
 			# Note: Get tags here because some applications might use other (non-numeric, multiple) tags
 			fitfunc = (Tinv, signal, Δsignal) -> begin
 				let	T1_0::Float64 = specs["T1_0"],
@@ -48,10 +48,13 @@ function main()
 			names = ["T1", "ΔT1", "Minv", "ΔMinv", "M0", "ΔM0"]
 		elseif specs["type"] == "Transverse Relaxation"
 			tagname = DICOM.tag"EchoTime"
-			tags = DICOMTools.get_tag(multiseries, tagname, Float64)
-			fitfunc = MRIRelax.fit_transverse_relax
+			tags = DICOMTools.get_tag(multiseries, tagname, Float64, NaN)
+			fitfunc = MRIRelax.fit_transverse
 			num_params = 4
-			names = ["T2", "ΔM0", "ΔM0"]
+			names = ["T2", "ΔT2", "M0", "ΔM0"]
+		else
+			error("Unknown type $(specs["type"])")
+			return
 		end
 
 		# Get signals and tags from DICOMs
@@ -99,7 +102,7 @@ function fit2dcm(
 	]
 
 	# Iterate over voxels
-	Threads.@threads for I in CartesianIndices(size(signal)[2:4])
+	Threads.@threads :static for I in CartesianIndices(size(signal)[2:4])
 		tid = Threads.threadid()
 		returned = fitfunc(tags, signal[:, I], Δsignal)
 		for (tag_idx, value) in enumerate(returned)
